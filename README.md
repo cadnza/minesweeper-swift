@@ -3,5 +3,5 @@
 With ❤️.
 
 ```
-swift msw.swift
+./msw
 ```
