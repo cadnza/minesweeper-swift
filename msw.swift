@@ -380,7 +380,7 @@ class MSW {
 			var xNew: String = x
 			let spaceRemaining: Int = space - xNew.count
 			for _ in 1...(spaceRemaining) {
-				xNew = "\(xNew) "
+				xNew = " \(xNew)"
 			}
 			final = "\(final)\(xNew)"
 		}
