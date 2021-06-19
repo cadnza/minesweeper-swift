@@ -7,6 +7,10 @@ func getInput() -> String {
 	return final
 }
 
+func skipLine() {
+	print("")
+}
+
 class MSW {
 
 	private var started: Bool = false
@@ -58,15 +62,15 @@ class MSW {
 		]
 		// Get difficulty level from user
 		print("Difficulty?:")
-		print("")
+		skipLine()
 		for i in 0..<levelNames.count {
 			levelNames[i] = "\(i+1). \(levelNames[i])"
 			print(levelNames[i])
 		}
-		print("")
+		skipLine()
 		var difficultyIndex: String = getInput()
 		while !((1...levels.count).map{String($0)}).contains(difficultyIndex){
-			print("")
+			skipLine()
 			print("A number 1 to \(levels.count), please:")
 			difficultyIndex = getInput()
 		}
@@ -76,22 +80,22 @@ class MSW {
 		self.size = [chosenDifficulty.nRow, chosenDifficulty.nCol]
 		self.nMine = chosenDifficulty.nMine
 		// Show intro
-		print("")
+		skipLine()
 		print("Let's play Minesweeper!")
-		print("")
+		skipLine()
 		print("Type a reference to select a square,")
 		print("e.g. B5 or c12.")
-		print("")
+		skipLine()
 		print("To flag a square as a possible mine,")
 		print("put a \(self.sFlag) before its reference, e.g.")
 		print("\(self.sFlag)B5 or \(self.sFlag)c12.")
-		print("")
+		skipLine()
 		print("If you're not sure about a square,")
 		print("mark it with a \(self.sQuestion), e.g. \(self.sQuestion)B5 or \(self.sQuestion)c12.")
-		print("")
+		skipLine()
 		print("And \(self.sCover) resets a previously \(self.sFlag)ed or \(self.sQuestion)ed")
 		print("square, e.g. \(self.sCover)B5 or \(self.sCover)c12.")
-		print("")
+		skipLine()
 		print("That's all, good luck!")
 		// Go
 		self.play()
@@ -110,37 +114,37 @@ class MSW {
 			do {
 				try self.interpretInput(input: userInput)
 			} catch inputError.badCharacter {
-				print("")
+				skipLine()
 				print("Remember:")
 				print("\(self.sFlag) - Flag")
 				print("\(self.sQuestion) - Question")
 				print("\(self.sCover) - Reset")
 			} catch inputError.outOfOrder {
-				print("")
+				skipLine()
 				print("You want column then row, e.g. B5 or c12.")
 			} catch inputError.noColumn {
-				print("")
+				skipLine()
 				print("You'll need a column letter before your row number.")
 			} catch inputError.noRow {
-				print("")
+				skipLine()
 				print("You'll need a row number after your column letter.")
 			} catch inputError.badColRef {
-				print("")
+				skipLine()
 				print("It doesn't look like that's a column.")
 			} catch inputError.outOfBounds {
-				print("")
+				skipLine()
 				print("It doesn't look like we have that square on the board.")
 			} catch inputError.noMoreFlags {
-				print("")
+				skipLine()
 				print("You're out of flags!")
 				print("You can unflag squares with \(self.sCover), e.g. \(self.sCover)B5 or \(self.sCover)c12.")
 			} catch inputError.hardExit {
-				print("")
+				skipLine()
 				print("👷")
-				print("")
+				skipLine()
 				stillPlaying = false
 			} catch {
-				print("")
+				skipLine()
 				print("Hmmm...")
 			}
 			// Only proceed if game is started
@@ -157,9 +161,9 @@ class MSW {
 					}
 				}
 				showVisible()
-				print("")
+				skipLine()
 				print("😎")
-				print("")
+				skipLine()
 			}
 			// Check for loss and end game if so
 			let isLoss: Bool = self.visible.contains(self.sMine)
@@ -171,9 +175,9 @@ class MSW {
 					}
 				}
 				showVisible()
-				print("")
+				skipLine()
 				print("😣")
-				print("")
+				skipLine()
 			}
 		}
 	}
@@ -334,7 +338,7 @@ class MSW {
 	}
 
 	private func showVisible() {
-		print("")
+		skipLine()
 		let nFlagsLeft: Int = self.countFlagsLeft()
 		print("\(self.flagsLeftMessage)\(nFlagsLeft)")
 		let visibleCosmetic: [String] = self.visible.map{
