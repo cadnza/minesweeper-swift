@@ -1,5 +1,12 @@
 import Swift
 
+func getInput() -> String {
+	let promptChar: String = ">"
+	print(promptChar, terminator: " ")
+	let final: String = readLine()!
+	return final
+}
+
 class MSW {
 
 	private var started: Bool = false
@@ -57,11 +64,11 @@ class MSW {
 			print(levelNames[i])
 		}
 		print("")
-		var difficultyIndex: String = readLine()!
+		var difficultyIndex: String = getInput()
 		while !((1...levels.count).map{String($0)}).contains(difficultyIndex){
 			print("")
 			print("A number 1 to \(levels.count), please:")
-			difficultyIndex = readLine()!
+			difficultyIndex = getInput()
 		}
 		let chosenDifficultyIndex: Int = Int(difficultyIndex)!-1;
 		let chosenDifficulty: Difficulty = levels[chosenDifficultyIndex]
@@ -98,7 +105,7 @@ class MSW {
 			// Show grid
 			self.showVisible()
 			// Get input
-			let userInput: String = readLine() ?? "Hello";
+			let userInput: String = getInput();
 			// Interpret input
 			do {
 				try self.interpretInput(input: userInput)
