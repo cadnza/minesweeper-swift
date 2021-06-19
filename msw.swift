@@ -143,6 +143,9 @@ class MSW {
 				print("👷")
 				skipLine()
 				stillPlaying = false
+			} catch inputError.emptyInput {
+				skipLine()
+				print("Enter a reference, e.g. B5 or c12.")
 			} catch {
 				skipLine()
 				print("Hmmm...")
@@ -191,6 +194,7 @@ class MSW {
 		case outOfBounds
 		case noMoreFlags
 		case hardExit
+		case emptyInput
 	}
 
 	private func interpretInput(input: String) throws {
@@ -198,6 +202,10 @@ class MSW {
 		let x: String = input.uppercased()
 		if ["QUIT","Q","EXIT"].contains(x) {
 			throw inputError.hardExit
+		}
+		// Error if empty
+		if x.count == 0 {
+			throw inputError.emptyInput
 		}
 		// Set control variables
 		var cnChars: [String] = []
