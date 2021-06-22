@@ -2,7 +2,7 @@
 
 ![](https://img.shields.io/github/v/release/cadnza/minesweeper-swift)
 
-With ❤️.
+Made with ❤️.
 
 ```
 ./msw
