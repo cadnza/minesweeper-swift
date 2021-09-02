@@ -5,5 +5,6 @@
 Made with ❤️.
 
 ```
+swiftc msw.swift
 ./msw
 ```
