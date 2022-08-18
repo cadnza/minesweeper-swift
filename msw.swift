@@ -30,15 +30,15 @@ class MSW {
 	private let flagsLeftMessage: String = "Flags left: "
 
 	private let letters: [String] = [
-		"A","B","C","D","E","F","G",
-		"H","I","J","K","L","M","N",
-		"O","P","Q","R","S","T","U",
-		"V","W","X","Y","Z"
+		"A", "B", "C", "D", "E", "F", "G",
+		"H", "I", "J", "K", "L", "M", "N",
+		"O", "P", "Q", "R", "S", "T", "U",
+		"V", "W", "X", "Y", "Z"
 	]
-	private let integers: [String] = Array(0...9).map{String($0)}
+	private let integers: [String] = Array(0...9).map { String($0) }
 
-	private var hidden: [Int]? = nil
-	private lazy var visible: [String] = [String](repeating: self.sCover, count: self.size[0]*self.size[1])
+	private var hidden: [Int]?
+	private lazy var visible: [String] = [String](repeating: self.sCover, count: self.size[0] * self.size[1])
 
 	private struct Difficulty {
 		let nRow: Int
@@ -64,17 +64,17 @@ class MSW {
 		print("Difficulty?:")
 		skipLine()
 		for i in 0..<levelNames.count {
-			levelNames[i] = "\(i+1). \(levelNames[i])"
+			levelNames[i] = "\(i + 1). \(levelNames[i])"
 			print(levelNames[i])
 		}
 		skipLine()
 		var difficultyIndex: String = getInput()
-		while !((1...levels.count).map{String($0)}).contains(difficultyIndex){
+		while !((1...levels.count).map { String($0) }).contains(difficultyIndex) {
 			skipLine()
 			print("A number 1 to \(levels.count), please:")
 			difficultyIndex = getInput()
 		}
-		let chosenDifficultyIndex: Int = Int(difficultyIndex)!-1;
+		let chosenDifficultyIndex: Int = Int(difficultyIndex)! - 1
 		let chosenDifficulty: Difficulty = levels[chosenDifficultyIndex]
 		// Set parameters
 		self.size = [chosenDifficulty.nRow, chosenDifficulty.nCol]
@@ -105,11 +105,11 @@ class MSW {
 		// Set playing status
 		var stillPlaying: Bool = true
 		// Start loop
-		while(stillPlaying) {
+		while stillPlaying {
 			// Show grid
 			self.showVisible()
 			// Get input
-			let userInput: String = getInput();
+			let userInput: String = getInput()
 			// Interpret input
 			do {
 				try self.interpretInput(input: userInput)
@@ -200,7 +200,7 @@ class MSW {
 	private func interpretInput(input: String) throws {
 		// Uppercase input
 		let x: String = input.uppercased()
-		if ["QUIT","Q","EXIT"].contains(x) {
+		if ["QUIT", "Q", "EXIT"].contains(x) {
 			throw inputError.hardExit
 		}
 		// Error if empty
@@ -221,7 +221,7 @@ class MSW {
 			// Set current value
 			let currVal = String(x[x.index(x.startIndex, offsetBy: i)])
 			// Ignore whitespace
-			if ["\t"," "].contains(currVal) {
+			if ["\t", " "].contains(currVal) {
 				continue
 			}
 			// Error on unexpected characters
@@ -278,12 +278,12 @@ class MSW {
 			throw inputError.badColRef
 		}
 		// Get column index
-		let cnRef: String = cnChars.joined(separator: "")
+		let cnRef: String = cnChars.joined()
 		let focusLetter: String = cnChars[0]
 		let cnMult: Int = cnRef.count - 1
 		let cnIndex: Int = letters.firstIndex(of: focusLetter)! + letters.count * cnMult + 1
 		// Get row index
-		let rwIndex: Int = Int(rwChars.joined(separator: ""))! - 1
+		let rwIndex: Int = Int(rwChars.joined())! - 1
 		// Validate bounds
 		if rwIndex >= self.size[0] || cnIndex > self.size[1] || rwIndex < 0 || cnIndex < 0 {
 			throw inputError.outOfBounds
@@ -349,7 +349,7 @@ class MSW {
 		skipLine()
 		let nFlagsLeft: Int = self.countFlagsLeft()
 		print("\(self.flagsLeftMessage)\(nFlagsLeft)")
-		let visibleCosmetic: [String] = self.visible.map{
+		let visibleCosmetic: [String] = self.visible.map {
 			if $0 == "0" {
 				return self.sEmpty
 			} else {
@@ -365,7 +365,7 @@ class MSW {
 			let idx: Int = i - 1
 			let focusLetter: String = self.letters[idx % letters.count]
 			let nRepeats: Int = ceiling(i, letters.count)
-			let cnLabel = [String](repeating: focusLetter, count: nRepeats).joined(separator: "")
+			let cnLabel = [String](repeating: focusLetter, count: nRepeats).joined()
 			gridNew.append(cnLabel)
 		}
 		for i in 0..<grid.count {
@@ -375,7 +375,7 @@ class MSW {
 			gridNew.append(grid[i])
 		}
 		var final: String = ""
-		let space: Int = gridNew.map{$0.count}.max()! + 1
+		let space: Int = gridNew.map { $0.count }.max()! + 1
 		func addToFinal(_ x: String) {
 			var xNew: String = x
 			let spaceRemaining: Int = space - xNew.count
@@ -395,9 +395,9 @@ class MSW {
 
 	private func getHiddenGrid(exclude: Int) -> [Int] {
 		// Initialize hidden grid
-		var hidden: [Int] = [Int](repeating: 0, count: self.size[0]*self.size[1])
+		var hidden: [Int] = [Int](repeating: 0, count: self.size[0] * self.size[1])
 		// Initialize placement options, excluding excluded index
-		var placementOpts: [Int] = [Int](0..<hidden.count).filter{$0 != exclude}
+		var placementOpts: [Int] = [Int](0..<hidden.count).filter { $0 != exclude }
 		// Shuffle placement options
 		for i in (1..<placementOpts.count).reversed() {
 			let j: Int = Int.random(in: 0...i)
@@ -407,14 +407,14 @@ class MSW {
 		}
 		// Place mines
 		let minePlacements = placementOpts[0..<nMine]
-		for i in minePlacements{
+		for i in minePlacements {
 			hidden[i] = self.kMine
 		}
 		// Count mines adjacent to each square
 		for i in 0..<hidden.count {
 			if hidden[i] != kMine {
 				let adjs: [Int] = self.getAdjSquares(grid: hidden, idx: i)
-				let ct: Int = adjs.filter{hidden[$0]==self.kMine}.count
+				let ct: Int = adjs.filter { hidden[$0] == self.kMine }.count
 				hidden[i] = ct
 			}
 		}
@@ -465,13 +465,13 @@ class MSW {
 			final.append(idx1 + self.size[1] + 1)
 		}
 		// Convert back to 0 basis
-		final = final.map{$0 - 1}
+		final = final.map { $0 - 1 }
 		// Return
 		return final
 	}
 
 	private func countFlagsLeft() -> Int {
-		let final: Int = self.nMine - self.visible.filter{$0 == self.sFlag}.count
+		let final: Int = self.nMine - self.visible.filter { $0 == self.sFlag }.count
 		return final
 	}
 
@@ -484,7 +484,7 @@ class MSW {
 		let idx1: Int = idx + 1
 		let cn: Int = idx1 % self.size[1]
 		let rw: Int = (idx1 - cn) / self.size[1]
-		let final: [Int] = [rw,cn]
+		let final: [Int] = [rw, cn]
 		return final
 	}
 
